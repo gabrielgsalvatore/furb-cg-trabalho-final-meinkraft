@@ -1,0 +1,10 @@
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\obj\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.csprojAssemblyReference.cache
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\obj\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.AssemblyInfoInputs.cache
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\obj\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.AssemblyInfo.cs
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\bin\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.deps.json
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\bin\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.runtimeconfig.json
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\bin\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.runtimeconfig.dev.json
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\bin\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.dll
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\bin\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.pdb
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\obj\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.dll
+C:\Users\gabri\Documents\FURB\Computação Gráfica\furb-cg-trabalho-final-meinkraft\obj\Debug\netcoreapp2.2\furb-cg-trabalho-final-meinkraft.pdb
