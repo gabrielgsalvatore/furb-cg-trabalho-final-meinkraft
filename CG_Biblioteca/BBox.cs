@@ -11,6 +11,12 @@ namespace CG_Biblioteca
   public class BBox
   {
     private double menorX, menorY, menorZ, maiorX, maiorY, maiorZ;
+    public double MenorX => menorX;
+    public double MenorY => menorY;
+    public double MenorZ => menorZ;
+    public double MaiorX => maiorX;
+    public double MaiorY => maiorY;
+    public double MaiorZ => maiorZ;
     private Ponto4D centro = new Ponto4D();
     public BBox(double menorX = 0, double menorY = 0, double menorZ = 0, double maiorX = 0, double maiorY = 0, double maiorZ = 0)
     {
@@ -22,6 +28,16 @@ namespace CG_Biblioteca
     {
       this.menorX = pto.X; this.menorY = pto.Y; this.menorZ = pto.Z;
       this.maiorX = pto.X; this.maiorY = pto.Y; this.maiorZ = pto.Z;
+    }
+
+    public void AtualizarBbox(Vector3 pos){
+      this.menorX = pos.X-1; this.menorY = pos.Y-1; this.menorZ = pos.Z-1;
+      this.maiorX = pos.X+1; this.maiorY = pos.Y+1; this.maiorZ = pos.Z+1;
+    }
+
+        public void AtualizarBboxCube(Vector3 pos){
+      this.menorX = pos.X-2; this.menorY = pos.Y-1; this.menorZ = pos.Z-2;
+      this.maiorX = pos.X+2; this.maiorY = pos.Y+1; this.maiorZ = pos.Z+2;
     }
 
     public void Atualizar(Ponto4D pto)
