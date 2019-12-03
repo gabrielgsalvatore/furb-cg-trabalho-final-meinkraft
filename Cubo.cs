@@ -10,6 +10,9 @@ namespace furb_cg_trabalho_final_meinkraft
   internal class Cubo : ObjetoGeometria
   {
     private bool exibeVetorNormal = false;
+    
+    private int altura = 1;
+    public int Altura {get => altura; set => altura = value;}
     public Cubo(string rotulo, Objeto paiRef) : base(rotulo, paiRef)
     {      
       base.PontosAdicionar(new Ponto4D(-1, -1, 1)); // PtoA listaPto[0]
@@ -21,6 +24,7 @@ namespace furb_cg_trabalho_final_meinkraft
       base.PontosAdicionar(new Ponto4D(1, 1, -1)); // PtoG listaPto[6]
       base.PontosAdicionar(new Ponto4D(-1, 1, -1)); // PtoH listaPto[7]
     }
+    
     
     protected override void DesenharObjeto()
     {       // Sentido anti-horário

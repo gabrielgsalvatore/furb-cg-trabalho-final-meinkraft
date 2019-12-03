@@ -24,6 +24,14 @@ namespace CG_Biblioteca
       this.maiorX = maiorX; this.maiorY = maiorY; this.maiorZ = maiorZ;
     }
 
+    public Vector3 vectorMenor(){
+      return new Vector3((float)this.MenorX, (float)this.MenorY, (float)this.MenorZ).Normalized();
+    }
+
+     public Vector3 vectorMaior(){
+      return new Vector3((float)this.MaiorX, (float)this.MaiorY, (float)this.MaiorZ).Normalized();
+    }
+
     public void Atribuir(Ponto4D pto)
     {
       this.menorX = pto.X; this.menorY = pto.Y; this.menorZ = pto.Z;

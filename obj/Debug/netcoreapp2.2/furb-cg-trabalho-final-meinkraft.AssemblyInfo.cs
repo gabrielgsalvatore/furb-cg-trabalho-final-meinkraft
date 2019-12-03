@@ -7,10 +7,4 @@
 using System;
 using System.Reflection;
 
-[assembly: System.Reflection.AssemblyCompanyAttribute("furb-cg-trabalho-final-meinkraft")]
-[assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
-[assembly: System.Reflection.AssemblyProductAttribute("furb-cg-trabalho-final-meinkraft")]
-[assembly: System.Reflection.AssemblyTitleAttribute("furb-cg-trabalho-final-meinkraft")]
-[assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
+

@@ -1,0 +1,75 @@
+{
+  "format": 1,
+  "restore": {
+    "c:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\CG_Biblioteca\\CG_Biblioteca.csproj": {}
+  },
+  "projects": {
+    "c:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\CG_Biblioteca\\CG_Biblioteca.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "c:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\CG_Biblioteca\\CG_Biblioteca.csproj",
+        "projectName": "CG_Biblioteca",
+        "projectPath": "c:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\CG_Biblioteca\\CG_Biblioteca.csproj",
+        "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
+        "outputPath": "c:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\CG_Biblioteca\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netstandard2.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netstandard2.0": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netstandard2.0": {
+          "dependencies": {
+            "Microsoft.Win32.SystemEvents": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            },
+            "NETStandard.Library": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.0.3, )",
+              "autoReferenced": true
+            },
+            "OpenTK": {
+              "target": "Package",
+              "version": "[3.0.1, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[4.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

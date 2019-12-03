@@ -22,20 +22,38 @@ namespace furb_cg_trabalho_final_meinkraft
         private Cubo cubo;
         private Cubo[,] mapa = new Cubo[50, 50];
         private Camera cam = new Camera(new Vector3(0.0f, 2.5f, 0.0f), 1.0f);
+
         private double time;
-        private bool freecam = false;
+
         private bool jumping = false;
-        private bool onAir = false;
+
+        private Cubo selecionado = null;
+
+        private Vector3 castOrigin;
+        private Vector3 castDestiny;
 
         private BBox camBbox = new BBox(-1, -1, -1, 1, 1, 1);
 
+        private static int width;
+        private static int height;
 
+        public static int Width { get => width; set => width = value; }
+        private Cubo crosshairPivot = new Cubo("pivot", null);
+        private Cubo crosshair = new Cubo("Aim", null);
+        public static int Height { get => height; set => height = value; }
         private Mundo(int width, int height) : base(width, height) { }
+
+
 
         public static Mundo GetInstance(int width, int height)
         {
             if (singletonMundo == null)
+            {
+                Width = width;
+                Height = height;
                 singletonMundo = new Mundo(width, height);
+            }
+
             return singletonMundo;
         }
 
@@ -67,17 +85,19 @@ namespace furb_cg_trabalho_final_meinkraft
         }
 
 
-
         private void desenharMapa()
         {
             for (int x = 0; x < 50; x++)
             {
                 for (int y = 0; y < 50; y++)
                 {
-                    Cubo cube = mapa[x, y];
+                    if (mapa[x, y] != null)
+                    {
+                        Cubo cube = mapa[x, y];
 
-                    cube.BBox.Desenhar();
-                    cube.Desenhar();
+                        //cube.BBox.Desenhar();
+                        cube.Desenhar();
+                    }
 
                 }
             }
@@ -85,8 +105,9 @@ namespace furb_cg_trabalho_final_meinkraft
         protected override void OnLoad(EventArgs e)
         {
 
+            cam.Fov = 70f;
             camBbox.Atualizar(new Ponto4D(cam.Position.X, cam.Position.Y, cam.Position.Z));
-            CursorVisible = false;
+            CursorVisible = true;
             base.OnLoad(e);
             GL.ClearColor(Color.Gray);
             popularMapa();
@@ -100,6 +121,7 @@ namespace furb_cg_trabalho_final_meinkraft
             if (Focused) // check to see if the window is focused  
             {
                 Mouse.SetPosition(X + Width / 2f, Y + Height / 2f);
+                showSelected();
             }
 
             base.OnMouseMove(e);
@@ -108,7 +130,8 @@ namespace furb_cg_trabalho_final_meinkraft
         private async void Jump()
         {
             jumping = true;
-            for(int i = 0; i < 20; i++){
+            for (int i = 0; i < 20; i++)
+            {
                 cam.Position += cam.Up * 6.0f * (float)time;
                 await Task.Delay(1);
             }
@@ -139,44 +162,78 @@ namespace furb_cg_trabalho_final_meinkraft
             }
         }
 
+        protected override void OnMouseDown(MouseButtonEventArgs e)
+        {
+            if (e.Button.Equals(MouseButton.Left))
+            {
+                for (int x = 0; x < mapa.GetLength(0); x++)
+                {
+                    for (int y = 0; y < mapa.GetLength(1); y++)
+                    {
+                        if (mapa[x, y] != null)
+                        {
+                            if (mapa[x, y].ToString().Equals(selecionado.ToString()))
+                            {
+                                mapa[x, y] = null;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void showSelected()
+        {
+            var mouse = OpenTK.Input.Mouse.GetState();
+            castRay(cam.Front.X, cam.Front.Y);
+            Console.WriteLine(cam.Front.X + " " + cam.Front.Y);
+            float minDistance = float.MaxValue;
+            for (int x = 0; x < 50; x++)
+            {
+                for (int y = 0; y < 50; y++)
+                {
+                    if (mapa[x, y] != null)
+                    {
+                        BBox objetoBbox = mapa[x, y].BBox;
+                        Vector3 objeto = new Vector3((float)mapa[x, y].Matriz.ObterElemento(12), (float)mapa[x, y].Matriz.ObterElemento(13), (float)mapa[x, y].Matriz.ObterElemento(14));
+                        float distance = getDistance(objeto);
+                        if (distance <= minDistance)
+                        {
+                            minDistance = distance;
+                            selecionado = mapa[x, y];
+                        }
+
+                    }
+                }
+            }
+        }
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
 
             KeyboardState keyState = Keyboard.GetState();
+
             if (keyState.IsKeyDown(Key.Escape))
             {
                 this.Close();
             }
             if (keyState.IsKeyDown(Key.W)) //TODO: Tratar colisão
             {
-                cam.Position += cam.ViewFront * 2.0f * (float)time;
+                cam.Position += cam.ViewFront * 4.0f * (float)time;
+
             }
             if (keyState.IsKeyDown(Key.S))
             {
-                cam.Position -= cam.ViewFront * 2.0f * (float)time;
+                cam.Position -= cam.ViewFront * 4.0f * (float)time;
+
             }
             if (keyState.IsKeyDown(Key.A))
             {
-                cam.Position -= cam.Right * 2.0f * (float)time;
+                cam.Position -= cam.Right * 4.0f * (float)time;
+
             }
             if (keyState.IsKeyDown(Key.D))
             {
-                cam.Position += cam.Right * 2.0f * (float)time;
-
-            }
-
-            if (keyState.IsKeyDown(Key.L))
-            {
-
-                if (!freecam)
-                {
-                    freecam = true;
-                    Console.WriteLine("freecam: " + freecam);
-                }
-                freecam = false;
-                Console.WriteLine("freecam: " + freecam);
-
-
+                cam.Position += cam.Right * 4.0f * (float)time;
 
             }
 
@@ -198,13 +255,54 @@ namespace furb_cg_trabalho_final_meinkraft
 
             }
 
-
             base.OnUpdateFrame(e);
 
             //ProcessInput();
 
         }
 
+
+        public void castRay(float x, float y)
+        {
+            x += width / 2; //ajuste
+            y += height / 2;
+            float mouseX = (2f * x) / (Mundo.Width) - 1;
+            float mouseY = (2f * y) / Mundo.Height - 1;
+
+            Vector4 startRay = new Vector4(mouseX, mouseY, -1, 1);
+            Vector4 endRay = new Vector4(mouseX, mouseY, 1, 1);
+
+
+            Matrix4 trans = cam.GetViewMatrix() * cam.GetProjectionMatrix();
+            trans.Invert();
+            startRay = Vector4.Transform(startRay, trans);
+            endRay = Vector4.Transform(endRay, trans);
+
+            castOrigin = startRay.Xyz / startRay.W;
+            castDestiny = endRay.Xyz / endRay.W;
+        }
+
+        public float getDistance(Vector3 alvo)
+        {
+            Vector3 x = castOrigin;
+            Vector3 y = castDestiny;
+
+            return Vector3.Cross(Vector3.Subtract(alvo, x), Vector3.Subtract(alvo, y)).Length / Vector3.Subtract(y, x).Length;
+        }
+
+        public void rayCast()
+        {
+            Vector3 origin = cam.Position;
+
+            Vector3 destiny = cam.Front;
+            origin.Y = -(float)0.1;
+
+            GL.PointSize(10);
+            GL.Begin(PrimitiveType.LineStrip);
+            GL.Vertex3(origin);
+            GL.Vertex3(origin + destiny * 100);
+            GL.End();
+        }
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -214,22 +312,33 @@ namespace furb_cg_trabalho_final_meinkraft
             camBbox.AtualizarBbox(cam.Position);
             camBbox.ProcessarCentro();
             camBbox.Desenhar();
-            onAir = false;
+
+
             if (!isGrounded() && !jumping)
             {
-                onAir = true;
+
                 Console.WriteLine("Caindo");
                 cam.Position -= cam.Up * 4.5f * (float)time * 2;
             }
 
-
-
-
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
             desenharMapa();
+            if (selecionado != null)
+                selecionado.BBox.Desenhar();
+
+            rayCast();
+            crosshair.Matriz.AtribuirIdentidade();
+            crosshair.EscalaXYZ(0.01, 0.01, 0.01);
+
+            crosshair.TranslacaoXYZ(cam.Front.X * 1.2, cam.Front.Y, cam.Front.Z * 1.2);
+            crosshair.TranslacaoXYZ(cam.Position.X, cam.Position.Y, cam.Position.Z);
+
+            crosshair.Desenhar();
+
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
+
             this.SwapBuffers();
         }
 
@@ -237,6 +346,7 @@ namespace furb_cg_trabalho_final_meinkraft
 
         private bool isOnTop(BBox bbox)
         {
+
             if (camBbox.obterCentro.X >= bbox.obterMenorX && camBbox.obterCentro.X <= bbox.obterMaiorX && camBbox.obterCentro.Z >= bbox.obterMenorZ && camBbox.obterCentro.Z <= bbox.obterMaiorZ)
             {
                 double delta = camBbox.obterMenorY - bbox.obterMaiorY;
@@ -256,11 +366,15 @@ namespace furb_cg_trabalho_final_meinkraft
             {
                 for (int y = 0; y < 50; y++)
                 {
-                    if (isOnTop(mapa[x, y].BBox))
+                    if (mapa[x, y] != null)
                     {
-                        return true;
+                        if (isOnTop(mapa[x, y].BBox))
+                        {
+                            return true;
 
+                        }
                     }
+
                 }
             }
             return false;

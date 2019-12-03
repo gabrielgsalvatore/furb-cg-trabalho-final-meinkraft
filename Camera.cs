@@ -76,7 +76,7 @@ namespace furb_cg_trabalho_final_meinkraft
             get => MathHelper.RadiansToDegrees(_fov);
             set
             {
-                var angle = MathHelper.Clamp(value, 1f, 45f);
+                var angle = MathHelper.Clamp(value, 1f, 85f);
                 _fov = MathHelper.DegreesToRadians(angle);
             }
         }
