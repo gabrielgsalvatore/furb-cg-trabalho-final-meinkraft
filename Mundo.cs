@@ -34,19 +34,23 @@ namespace furb_cg_trabalho_final_meinkraft
 
         private BBox camBbox = new BBox(-1, -1, -1, 1, 1, 1);
         private Dictionary<String, Cubo> map = new Dictionary<String, Cubo>();
-        private int mapX = 30;
+        private int mapX = 50;
         private int mapY = 5;
-        private int mapZ = 30;
+        private int mapZ = 50;
         private static int width;
         private static int height;
         private int currentPlayerHeight;
+        private int currentPlayerX;
+        private int currentPlayerZ;
+        private bool useDisplayList = false;
+
         public static int Width { get => width; set => width = value; }
         private Cubo crosshairPivot = new Cubo("pivot", null);
         private Cubo crosshair = new Cubo("Aim", null);
+
+
         public static int Height { get => height; set => height = value; }
         private Mundo(int width, int height) : base(width, height) { }
-
-
 
         public static Mundo GetInstance(int width, int height)
         {
@@ -57,25 +61,28 @@ namespace furb_cg_trabalho_final_meinkraft
                 singletonMundo = new Mundo(width, height);
             }
 
+
             return singletonMundo;
         }
 
         public void adicionarBloco()
         {
-            for (int x = 0; x < mapX; x++)
+            if (selecionado != null)
             {
-                for (int y = 0; y < mapY; y++)
+                String[] coord = selecionado.ToString().Split(',');
+                int x = int.Parse(coord[0]);
+                int y = int.Parse(coord[1]) + 1;
+                int z = int.Parse(coord[2]);
+                String rotulo = x + "," + y + "," + z;
+                if (!map.ContainsKey(rotulo))
                 {
-                    for (int z = 0; z < mapZ; z++)
-                    {
-                        String rotulo = x + "," + y + "," + z;
-                        if (selecionado.ToString().Equals(map[rotulo].ToString()))
-                        {
-
-
-                        }
-                    }
+                    Cubo cube = new Cubo(rotulo, null);
+                    cube.EscalaXYZ(1, 1, 1);
+                    cube.TranslacaoXYZ(x * 2, y * 2, z * 2);
+                    cube.BBox.AtualizarBbox(new Vector3(x * 2, y * 2, z * 2));
+                    map.Add(rotulo, cube);
                 }
+
             }
         }
 
@@ -101,21 +108,26 @@ namespace furb_cg_trabalho_final_meinkraft
 
         private void desenharMapa()
         {
-            for (int x = 0; x < mapX; x++)
+            foreach (var c in map)
             {
-                for (int y = 0; y < mapY; y++)
-                {
-                    for (int z = 0; z < mapZ; z++)
-                    {
-                        String rotulo = x + "," + y + "," + z;
-                        if (map.ContainsKey(rotulo))
-                        {
-                            Cubo cube = map[rotulo];
-                            cube.Desenhar();
-                        }
-                    }
-                }
+                c.Value.Desenhar();
             }
+
+            // for (int x = 0; x < mapX; x++)
+            // {
+            //     for (int y = 0; y < mapY; y++)
+            //     {
+            //         for (int z = 0; z < mapZ; z++)
+            //         {
+            //             String rotulo = x + "," + y + "," + z;
+            //             if (map.ContainsKey(rotulo))
+            //             {
+            //                 Cubo cube = map[rotulo];
+            //                 cube. nhar();
+            //             }
+            //         }
+            //     }
+            // }
         }
         protected override void OnLoad(EventArgs e)
         {
@@ -126,7 +138,20 @@ namespace furb_cg_trabalho_final_meinkraft
             base.OnLoad(e);
             GL.ClearColor(Color.Gray);
             popularMapa();
-
+            if (useDisplayList)
+            {
+                var index = GL.GenLists(1);
+                if (index != 0)
+                {
+                    GL.NewList(index, ListMode.Compile);
+                    desenharMapa();
+                    GL.EndList();
+                }
+            }
+            else
+            {
+                desenharMapa();
+            }
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
         }
@@ -147,7 +172,7 @@ namespace furb_cg_trabalho_final_meinkraft
             jumping = true;
             for (int i = 0; i < 35; i++)
             {
-                cam.Position += cam.Up * 10.0f * (float)time;
+                cam.Position = Vector3.Add(cam.Position, new Vector3(0, 10 * (float)time, 0));
                 await Task.Delay(01);
             }
             await Task.Delay(20);
@@ -175,30 +200,65 @@ namespace furb_cg_trabalho_final_meinkraft
                 }
 
             }
+            if (e.Key == Key.Plus)
+            {
+                useDisplayList = !useDisplayList;
+                Console.WriteLine(useDisplayList);
+                if (useDisplayList)
+                {
+                    var index = GL.GenLists(1);
+                    if (index != 0)
+                    {
+                        GL.NewList(index, ListMode.Compile);
+                        desenharMapa();
+                        GL.EndList();
+                    }
+                }
+            }
         }
 
         protected override void OnMouseDown(MouseButtonEventArgs e)
         {
             if (e.Button.Equals(MouseButton.Left))
             {
-                for (int x = 0; x < mapX; x++)
-                {
-                    for (int y = 0; y < mapY; y++)
-                    {
-                        for (int z = 0; z < mapZ; z++)
-                        {
-                            String rotulo = x + "," + y + "," + z;
-                            if (map.ContainsKey(rotulo))
-                            {
-                                if (map[rotulo].ToString().Equals(selecionado.ToString()))
-                                {
-                                    map.Remove(rotulo);
-                                }
-                            }
-                        }
-                    }
-                }
+                map.Remove(selecionado.ToString());
+                // for (int x = 0; x < mapX; x++)
+                // {
+                //     for (int y = 0; y < mapY; y++)
+                //     {
+                //         for (int z = 0; z < mapZ; z++)
+                //         {
+                //             String rotulo = x + "," + y + "," + z;
+                //             if (map.ContainsKey(rotulo))
+                //             {
+                //                 if (map[rotulo].ToString().Equals(selecionado.ToString()))
+                //                 {
+                //                     map.Remove(rotulo);
+                //                 }
+                //             }
+                //         }
+                //     }
+                // }
             }
+            if (e.Button.Equals(MouseButton.Right))
+            {
+                adicionarBloco();
+            }
+
+            if (selecionado != null && useDisplayList)
+            {
+                GL.DeleteLists(1, 1);
+                var index = GL.GenLists(1);
+                if (index != 0)
+                {
+                    GL.NewList(index, ListMode.Compile);
+                    desenharMapa();
+                    GL.EndList();
+                }
+
+            }
+
+
         }
 
         private void showSelected()
@@ -206,27 +266,42 @@ namespace furb_cg_trabalho_final_meinkraft
             var mouse = OpenTK.Input.Mouse.GetState();
             castRay(cam.Front.X, cam.Front.Y);
             float minDistance = float.MaxValue;
-            for (int x = 0; x < mapX; x++)
+            foreach (var item in map)
             {
-                for (int y = currentPlayerHeight-1; y <= currentPlayerHeight; y++)
+                String[] coord = item.Key.Split(',');
+                if (int.Parse(coord[1]) >= currentPlayerHeight - 1 && int.Parse(coord[0]) <= currentPlayerX * 3 && int.Parse(coord[2]) <= currentPlayerZ * 3)
                 {
-                    for (int z = 0; z < mapZ; z++)
+                    Cubo objeto = item.Value;
+                    Vector3 distObjeto = new Vector3((float)objeto.Matriz.ObterElemento(12), (float)objeto.Matriz.ObterElemento(13), (float)objeto.Matriz.ObterElemento(14));
+                    float distance = getDistance(distObjeto);
+                    if (distance <= minDistance)
                     {
-                        String rotulo = x + "," + y + "," + z;
-                        if (map.ContainsKey(rotulo))
-                        {
-                            BBox objetoBbox = map[rotulo].BBox;
-                            Vector3 objeto = new Vector3((float)map[rotulo].Matriz.ObterElemento(12), (float)map[rotulo].Matriz.ObterElemento(13), (float)map[rotulo].Matriz.ObterElemento(14));
-                            float distance = getDistance(objeto);
-                            if (distance <= minDistance)
-                            {
-                                minDistance = distance;
-                                selecionado = map[rotulo];
-                            }
-                        }
+                        minDistance = distance;
+                        selecionado = objeto;
                     }
                 }
             }
+            // for (int x = 0; x < mapX; x++)
+            // {
+            //     for (int y = currentPlayerHeight - 1; y <= currentPlayerHeight; y++)
+            //     {
+            //         for (int z = 0; z < mapZ; z++)
+            //         {
+            //             String rotulo = x + "," + y + "," + z;
+            //             if (map.ContainsKey(rotulo))
+            //             {
+            //                 BBox objetoBbox = map[rotulo].BBox;
+            //                 Vector3 objeto = new Vector3((float)map[rotulo].Matriz.ObterElemento(12), (float)map[rotulo].Matriz.ObterElemento(13), (float)map[rotulo].Matriz.ObterElemento(14));
+            //                 float distance = getDistance(objeto);
+            //                 if (distance <= minDistance)
+            //                 {
+            //                     minDistance = distance;
+            //                     selecionado = map[rotulo];
+            //                 }
+            //             }
+            //         }
+            //     }
+            // }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -279,7 +354,6 @@ namespace furb_cg_trabalho_final_meinkraft
 
             base.OnUpdateFrame(e);
 
-            //ProcessInput();
 
         }
 
@@ -338,16 +412,19 @@ namespace furb_cg_trabalho_final_meinkraft
 
             if (!isGrounded() && !jumping)
             {
-
-                cam.Position -= cam.Up * 4.5f * (float)time * 2;
+                cam.Position = Vector3.Subtract(cam.Position, new Vector3(0, 6 * (float)time, 0));
             }
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
-            desenharMapa();
+
             if (selecionado != null)
                 selecionado.BBox.Desenhar();
 
+            if (useDisplayList)
+                GL.CallList(1);
+            else
+                desenharMapa();
             // crosshair.Matriz.AtribuirIdentidade();
             // crosshair.EscalaXYZ(0.01, 0.01, 0.01);
 
@@ -394,28 +471,39 @@ namespace furb_cg_trabalho_final_meinkraft
 
         private bool isGrounded()
         {
-
-            for (int x = 0; x < mapX; x++)
+            foreach (var item in map)
             {
-                for (int y = 0; y < mapY; y++)
+                if (isOnTop(item.Value.BBox))
                 {
-                    for (int z = 0; z < mapZ; z++)
-                    {
-                        String rotulo = x + "," + y + "," + z;
-                        if (map.ContainsKey(rotulo))
-                        {
-                            if (isOnTop(map[rotulo].BBox))
-                            {
-                                currentPlayerHeight = y;
-                                return true;
-
-                            }
-                        }
-
-                    }
+                    String[] coord = item.Key.Split(',');
+                    currentPlayerHeight = int.Parse(coord[1]);
+                    currentPlayerX = int.Parse(coord[0]);
+                    currentPlayerZ = int.Parse(coord[2]);
+                    return true;
                 }
             }
             return false;
+            // for (int x = 0; x < mapX; x++)
+            // {
+            //     for (int y = 0; y < mapY; y++)
+            //     {
+            //         for (int z = 0; z < mapZ; z++)
+            //         {
+            //             String rotulo = x + "," + y + "," + z;
+            //             if (map.ContainsKey(rotulo))
+            //             {
+            //                 if (isOnTop(map[rotulo].BBox))
+            //                 {
+            //                     currentPlayerHeight = y;
+            //                     return true;
+
+            //                 }
+            //             }
+
+            //         }
+            //     }
+            // }
+            // return false;
 
         }
     }

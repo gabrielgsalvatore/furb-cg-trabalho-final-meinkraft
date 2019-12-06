@@ -807,26 +807,28 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\gabri\\.nuget\\packages\\": {}
+    "C:\\Users\\gabri\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\furb-cg-trabalho-final-meinkraft.csproj",
+      "projectUniqueName": "c:\\Users\\gabri\\Documents\\GitHub\\bcc\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\furb-cg-trabalho-final-meinkraft.csproj",
       "projectName": "furb-cg-trabalho-final-meinkraft",
-      "projectPath": "C:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\furb-cg-trabalho-final-meinkraft.csproj",
+      "projectPath": "c:\\Users\\gabri\\Documents\\GitHub\\bcc\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\furb-cg-trabalho-final-meinkraft.csproj",
       "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\gabri\\Documents\\FURB\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\obj\\",
+      "outputPath": "c:\\Users\\gabri\\Documents\\GitHub\\bcc\\Computação Gráfica\\furb-cg-trabalho-final-meinkraft\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp2.2"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -863,16 +865,10 @@
           }
         },
         "imports": [
-          "net461",
-          "net462",
-          "net47",
-          "net471",
-          "net472",
-          "net48"
+          "net461"
         ],
         "assetTargetFallback": true,
-        "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
+        "warn": true
       }
     }
   },
@@ -881,7 +877,7 @@
       "code": "NU1701",
       "level": "Warning",
       "warningLevel": 1,
-      "message": "Package 'OpenTK 3.0.1' was restored using '.NETFramework,Version=v4.6.1, .NETFramework,Version=v4.6.2, .NETFramework,Version=v4.7, .NETFramework,Version=v4.7.1, .NETFramework,Version=v4.7.2, .NETFramework,Version=v4.8' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.",
+      "message": "Package 'OpenTK 3.0.1' was restored using '.NETFramework,Version=v4.6.1' instead of the project target framework '.NETCoreApp,Version=v2.2'. This package may not be fully compatible with your project.",
       "libraryId": "OpenTK",
       "targetGraphs": [
         ".NETCoreApp,Version=v2.2"
