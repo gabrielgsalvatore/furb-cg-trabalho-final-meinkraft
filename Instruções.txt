@@ -1,0 +1,15 @@
+Para andar - W A S D
+Para Colocar Blocos - Botao Direito do Mouse
+Para Retirar Blocos - Botao Esquerdo do Mouse
+Para Pular - Espaço
+Para Ativar DisplayList - tecla "+"/"=" (ao lado do backspace)
+
+OBS: Não há tratamento de colisão laterais e frontais, apenas embaixo para manter o personagem em cima dos blocos.
+
+Para ajustar o tamanho do mundo ajuste os atributos mapX, mapY, e mapZ na classe Mundo.
+
+Alunos:
+
+Gabriel Garcia Salvador
+Leonardo Rovigo
+Sidnei Lanser
